@@ -123,7 +123,7 @@ const flash = new THREE.PointLight(0x00ff00, 1, 10)
 
 
 document.addEventListener('mousedown', (a) => {
-  const velocity = 6; // Adicione esta linha para definir a velocidade do tiro
+  const velocity = 5; // Adicione esta linha para definir a velocidade do tiro
   if (a.button == 0) {
       const currentTime = clock.getElapsedTime();
       const timeSinceLastShot = currentTime - lastShotTime;
