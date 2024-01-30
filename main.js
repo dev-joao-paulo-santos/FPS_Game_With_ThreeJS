@@ -15,8 +15,8 @@ let isJumping = false
 let isChasing = false
 let jumpStartTime = 0
 let jumpStartHeight = 0
-let maxH = 5
-let duration = 0.5
+let maxH = 8
+let duration = 0.6
 let swayAmount = .05;
 let enemy, gun
 let glbLoader = new GLTFLoader()
@@ -268,9 +268,6 @@ if (distanceEnemy < chaseDistance) {
 }
 
 //gameover
-
-
-
 if (distanceEnemy < 1) {
     enemyVoice.pause()
     gameoverSound.play()
@@ -403,8 +400,6 @@ document.addEventListener('keyup', (e) => {
   }
 });
 
-
-
 function animate(){
 
     requestAnimationFrame(animate)
@@ -437,7 +432,7 @@ function animate(){
       }
     });
 
-    // Dentro do loop de animação, antes de renderizar
+
 scene.children.forEach(function (child) {
   if (child instanceof THREE.Mesh && child.velocity) {
     child.position.add(child.velocity);
@@ -463,6 +458,13 @@ scene.children.forEach(function (child) {
 
 }
 animate()
-
+function resize(){
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.render(scene, camera)
+}
+  //Responsividade
+document.addEventListener('resize', resize())
 }
 init()
