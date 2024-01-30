@@ -390,7 +390,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'q') {
     isAiming = true;
     gunSpawner.position.set(-.2, .015, 0); // Posição de mira
-    mira.material.opacity = 0;
+    mira.position.y = 2
   }
 });
 
@@ -398,7 +398,7 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'q') {
     isAiming = false;
     gunSpawner.position.set(.2, -.1, -.4); // Posição normal
-    mira.material.opacity = 1;
+    mira.position.y = 0;
   }
 });
 
