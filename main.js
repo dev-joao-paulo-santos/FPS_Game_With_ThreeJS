@@ -31,6 +31,7 @@ const footstep = new Audio('./audio/footstep.wav')
 const footstepRun = new Audio('./audio/footstepRun.wav')
 const enemyDying = new Audio('./audio/monsterdying.mp3')
 const gameoverSound = new Audio('./audio/gotyou.mp3')
+const jumpSound = new Audio('./audio/jump.wav')
 scene = new THREE.Scene()
 scene.background = new THREE.Color('#1C1C1C')
 scene.fog = new THREE.FogExp2(0x1c1c1c, 0.008)
@@ -317,6 +318,9 @@ else {
         }
 
         if (keys[32] && !isJumping) { 
+            footstep.pause()
+            footstepRun.pause()
+            jumpSound.play()
             isJumping = true
             jumpStartTime = clock.getElapsedTime()
             jumpStartHeight = camera.position.y
