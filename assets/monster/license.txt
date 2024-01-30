@@ -1,0 +1,11 @@
+Model Information:
+* title:	Monster- with glowing eyes
+* source:	https://sketchfab.com/3d-models/monster-with-glowing-eyes-ec4df77d00f344b89162c3b1f000a012
+* author:	Dominic Baker (https://sketchfab.com/Domuk)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Monster- with glowing eyes" (https://sketchfab.com/3d-models/monster-with-glowing-eyes-ec4df77d00f344b89162c3b1f000a012) by Dominic Baker (https://sketchfab.com/Domuk) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
