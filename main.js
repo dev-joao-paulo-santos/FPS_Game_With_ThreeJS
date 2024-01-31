@@ -8,6 +8,7 @@ let scene, camera, renderer, txloader
 let keys = []
 let clock = new THREE.Clock()
 let enemyHitCount = 0;
+let requiredShots = 2;
 
 //variáveis para movimentação e saltos
 let speed = .4
@@ -404,12 +405,13 @@ function moveEnemyRandomly() {
   const angle = Math.random() * Math.PI * 2;
   const newPosition = new THREE.Vector3(
     camera.position.x + Math.cos(angle) * radius,
-    4, // Ajuste a altura conforme necessário
+    4,
     camera.position.z + Math.sin(angle) * radius
   );
 
   enemyHitBox.position.copy(newPosition);
-  enemyHitCount = 0; 
+  requiredShots *= 2; // Dobra o número de tiros necessários
+  enemyHitCount = 0; // Reinicia a contagem de tiros
 }
 
 
@@ -536,7 +538,7 @@ scene.children.forEach(function (child) {
       enemyHitCount++; // Incrementa a contagem de tiros
 
 
-      if (enemyHitCount >= 10) {
+      if (enemyHitCount >= requiredShots) {
         enemyVoice.pause()
         enemyDying.play()
         moveEnemyRandomly(); // Mova o enemyHitBox para uma posição aleatória
