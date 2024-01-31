@@ -15,8 +15,8 @@ let isJumping = false
 let isChasing = false
 let jumpStartTime = 0
 let jumpStartHeight = 0
-let maxH = 8
-let duration = 0.6
+let maxH = 6
+let duration = 0.5
 let swayAmount = .05;
 let enemy, gun
 let glbLoader = new GLTFLoader()
@@ -59,11 +59,58 @@ roof.position.set(0, 25, 0)
 
 const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(1700, 1700),
-    new THREE.MeshPhongMaterial({color: '#303030'})
+    new THREE.MeshPhongMaterial({color: '#303030', roughness: .5})
 )
 scene.add(ground)
 ground.rotation.x = -Math.PI /2
 ground.position.y = -2
+
+
+const wall = new THREE.Mesh(
+  new THREE.BoxGeometry(6, 1, 6),
+  new THREE.MeshStandardMaterial({
+    color: 0xff0000,
+    emissive: 0xff0000, // Cor da emissão
+    emissiveIntensity: 1, // Intensidade da emissão
+    roughness: 0.5,
+    metalness: 0.1,
+    receiveShadow: true
+  })
+);
+wall.position.y = 24
+scene.add(wall)
+
+const wallLight = new THREE.PointLight(0xff0000, 17, 27);
+wall.add(wallLight); // Adicione a luz como filha do mesh wall
+wallLight.position.set(0, -1, 0); // Posicione a luz no centro do mesh wall
+
+const roofSize = 700;
+const wallSize = 6;
+const spacing = 210; // Espaçamento entre os clones
+
+for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    // Clone do mesh wall
+    const clonedWall = wall.clone();
+    // Posiciona o clone
+    clonedWall.position.set(
+      (i - 1) * spacing,
+      wall.position.y,
+      (j - 1) * spacing
+    );
+    // Adiciona o clone à cena
+    scene.add(clonedWall);
+
+    // Clone da luz
+    const clonedWallLight = wallLight.clone();
+    // Posiciona a luz do clone no centro do mesh wall do clone
+    clonedWallLight.position.set(0, -1, 0);
+    // Adiciona a luz do clone como filha do mesh wall do clone
+    clonedWall.children[0].add(clonedWallLight);
+  }
+}
+
+//criação de arma
 
 const gunSpawner = new THREE.Mesh(
   new THREE.BoxGeometry(.001,.001,.001),
@@ -244,7 +291,6 @@ window.addEventListener('click', ()=>{
 
 document.addEventListener('keydown', (e)=>{  
    keys[e.keyCode] = true
-   camera.position.y += Math.sin(clock.getElapsedTime() * 20) * swayAmount;
   })
 document.addEventListener('keyup', (e)=>{  
    keys[e.keyCode] = false
@@ -269,6 +315,9 @@ if (distanceEnemy < chaseDistance) {
 }
 
 //gameover
+
+
+
 if (distanceEnemy < 1) {
     enemyVoice.pause()
     gameoverSound.play()
@@ -294,6 +343,9 @@ else {
           footstepRun.play()
           footstepRun.loop = true
           footstep.loop = false
+          camera.position.y += Math.sin(clock.getElapsedTime() * 5) * 0.002;
+          camera.rotation.z += Math.sin(clock.getElapsedTime() * 15) * 0.001;
+          gunSpawner.position.y += Math.sin(clock.getElapsedTime() * 15) * 0.005;
         }
 
         if(keys[87]){
@@ -318,9 +370,9 @@ else {
         }
 
         if (keys[32] && !isJumping) { 
-            footstep.pause()
-            footstepRun.pause()
-            jumpSound.play()
+          footstep.pause()
+          footstepRun.pause()
+          jumpSound.play()
             isJumping = true
             jumpStartTime = clock.getElapsedTime()
             jumpStartHeight = camera.position.y
@@ -386,6 +438,37 @@ function hitCrosshair() {
 let damageCross = null;
 
 
+//laser
+
+let laserBeam;
+
+function initLaser() {
+  const laserGeometry = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(.2, -.07, -.7),
+    new THREE.Vector3(.2, -.07, -50), // Ajuste o comprimento do raio conforme necessário
+  ]);
+
+  const laserMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+  laserBeam = new THREE.Line(laserGeometry, laserMaterial);
+  laserBeam.visible = false; // Inicialmente, o laser está invisível
+  gunSpawner.add(laserBeam);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'l') {
+    // Toggle visibilidade do laser
+    laserBeam.visible = !laserBeam.visible;
+
+    // Lógica adicional para atirar laser, se necessário
+    if (laserBeam.visible) {
+      // Lógica para o laser atirar (se necessário)
+    }
+  }
+});
+
+initLaser()
+
+
 //Mirar
 
 let isAiming = false;
@@ -393,8 +476,8 @@ let isAiming = false;
 document.addEventListener('keydown', (e) => {
   if (e.key === 'q') {
     isAiming = true;
-    gunSpawner.position.set(-.2, .015, 0); // Posição de mira
-    mira.position.y = 2
+    gunSpawner.position.set(-.1997, .0165, .03); // Posição de mira
+    mira.position.y = 1
   }
 });
 
@@ -402,16 +485,18 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'q') {
     isAiming = false;
     gunSpawner.position.set(.2, -.1, -.4); // Posição normal
-    mira.position.y = 0;
+    mira.position.y = 0
   }
 });
+
+
 
 function animate(){
 
     requestAnimationFrame(animate)
     move(clock.getDelta)
 
-    gunSpawner.position.y -= Math.sin(clock.getElapsedTime() * 13) * .00008;
+    gunSpawner.position.y -= Math.sin(clock.getElapsedTime() * 6) * .00008;
     // Verifica se está ocorrendo a animação de recoil
   if (isRecoiling) {
     const elapsedRecoilTime = (clock.getElapsedTime() - recoilStartTime) * 1000;
@@ -438,7 +523,7 @@ function animate(){
       }
     });
 
-
+    // Dentro do loop de animação, antes de renderizar
 scene.children.forEach(function (child) {
   if (child instanceof THREE.Mesh && child.velocity) {
     child.position.add(child.velocity);
@@ -463,7 +548,6 @@ scene.children.forEach(function (child) {
     renderer.render(scene, camera)
 
 }
-animate()
 function resize(){
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
@@ -471,6 +555,9 @@ function resize(){
   renderer.render(scene, camera)
 }
   //Responsividade
-document.addEventListener('resize', resize())
+document.addEventListener('resize', resize)
+animate()
+
+
 }
 init()
