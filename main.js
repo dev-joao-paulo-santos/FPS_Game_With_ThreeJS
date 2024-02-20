@@ -2,6 +2,7 @@ import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threej
 import {PointerLockControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/PointerLockControls.js'
 import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js'
 import {FBXLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/FBXLoader.js'
+import {RGBELoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/RGBELoader.js'
 
 
 let scene, camera, renderer, txloader
@@ -47,6 +48,13 @@ document.body.appendChild(renderer.domElement)
 
 txloader = new THREE.TextureLoader()
 
+
+const loader = new RGBELoader()
+loader.load('./assets/bkenv.hdr', function(texture){
+    texture.mapping = THREE.EquirectangularReflectionMapping
+    scene.background = texture
+    scene.environment = texture
+})
 
 
 //objetos 3d
