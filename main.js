@@ -71,7 +71,7 @@ const wall = new THREE.Mesh(
   new THREE.BoxGeometry(6, 1, 6),
   new THREE.MeshStandardMaterial({
     color: 0x00ff00,
-    emissive: 0xffffff, // Cor da emissão
+    emissive: 0x33ff33, // Cor da emissão
     emissiveIntensity: 1, // Intensidade da emissão
     roughness: 0.5,
     metalness: 0.1,
