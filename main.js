@@ -70,8 +70,8 @@ ground.position.y = -2
 const wall = new THREE.Mesh(
   new THREE.BoxGeometry(6, 1, 6),
   new THREE.MeshStandardMaterial({
-    color: 0xff0000,
-    emissive: 0xff0000, // Cor da emissão
+    color: 0x00ff00,
+    emissive: 0xffffff, // Cor da emissão
     emissiveIntensity: 1, // Intensidade da emissão
     roughness: 0.5,
     metalness: 0.1,
@@ -81,7 +81,7 @@ const wall = new THREE.Mesh(
 wall.position.y = 24
 scene.add(wall)
 
-const wallLight = new THREE.PointLight(0xff0000, 17, 27);
+const wallLight = new THREE.PointLight(0x00ff00, 17, 27);
 wall.add(wallLight); // Adicione a luz como filha do mesh wall
 wallLight.position.set(0, -1, 0); // Posicione a luz no centro do mesh wall
 
