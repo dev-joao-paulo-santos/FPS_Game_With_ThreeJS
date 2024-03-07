@@ -49,12 +49,12 @@ document.body.appendChild(renderer.domElement)
 txloader = new THREE.TextureLoader()
 
 
-const loader = new RGBELoader()
-loader.load('./img/bkenv.hdr', function(texture){
-    texture.mapping = THREE.EquirectangularReflectionMapping
-    scene.background = texture
-    scene.environment = texture
-})
+// const loader = new RGBELoader()
+// loader.load('./img/bkenv.hdr', function(texture){
+//     texture.mapping = THREE.EquirectangularReflectionMapping
+//     scene.background = texture
+//     scene.environment = texture
+// })
 
 
 //objetos 3d
